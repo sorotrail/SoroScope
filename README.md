@@ -1,52 +1,52 @@
-# SoroScope
+# SoroLens
 
 A contract explorer and event-data UI for the Stellar/Soroban network.
 
 Stellar's existing explorers show transactions and payments well. What they do
 not show well is **decoded Soroban contract event data** — what a contract
 actually emitted, with human-readable topics and values, browsable and
-filterable. SoroScope is a focused, self-hostable explorer for exactly that.
+filterable. SoroLens is a focused, self-hostable explorer for exactly that.
 
 Point it at a network, and browse contracts, inspect their decoded events, and
 filter across them in a small server-rendered web UI. Everything the UI shows is
-also available as JSON, so SoroScope doubles as a queryable API.
+also available as JSON, so SoroLens doubles as a queryable API.
 
 ```
                     ┌──────────────┐
  Stellar RPC ──────▶│              │
- (standalone)       │  SoroScope   │──▶ web UI + JSON API
+ (standalone)       │  SoroLens   │──▶ web UI + JSON API
  SoroTrail API ────▶│              │
  (upstream)         └──────────────┘
 ```
 
 ## Two operating modes
 
-SoroScope reads events through a single `EventSource` interface with two
+SoroLens reads events through a single `EventSource` interface with two
 implementations, selected by `SOURCE_MODE`. Everything above that interface —
 the web UI and the whole JSON API — behaves identically either way.
 
 ### Standalone mode (`SOURCE_MODE=rpc`)
 
-SoroScope polls Stellar RPC's `getEvents` itself and stores what it finds in its
+SoroLens polls Stellar RPC's `getEvents` itself and stores what it finds in its
 own Postgres database. Self-contained: all you need is an RPC endpoint.
 
 The catch is retention. **Stellar RPC only keeps contract events for roughly 24
 hours to 7 days**, so a standalone instance can only ever capture events emitted
 while it was running. History from before you started it is simply not
-available. SoroScope says so in a banner on every page rather than looking like
+available. SoroLens says so in a banner on every page rather than looking like
 a broken explorer.
 
 ### Upstream mode (`SOURCE_MODE=sorotrail`)
 
-SoroScope reads from an existing [SoroTrail](https://github.com/sorotrail/SoroTrail)
+SoroLens reads from an existing [SoroTrail](https://github.com/sorotrail/SoroTrail)
 indexer's HTTP API instead of polling the RPC. SoroTrail stores events durably,
 so this mode reaches back as far as that indexer has been running — well beyond
 the RPC's own window. No database of its own, no ingestion, no migrations.
 
-Two things are worth knowing about this mode, because SoroScope works around
+Two things are worth knowing about this mode, because SoroLens works around
 them rather than hiding them:
 
-- **SoroTrail paginates ascending by event ID only.** SoroScope shows newest
+- **SoroTrail paginates ascending by event ID only.** SoroLens shows newest
   first, so it walks ledger windows backwards and reverses locally, narrowing
   the window when a range turns out to be dense. A page view normally costs two
   to four upstream requests.
@@ -67,7 +67,7 @@ descending-order parameter and a `GET /contracts` endpoint. See
 docker compose up --build
 ```
 
-This starts Postgres and SoroScope against the public Stellar testnet. The UI is
+This starts Postgres and SoroLens against the public Stellar testnet. The UI is
 on <http://localhost:8080>; watch the logs to see events arrive. Migrations run
 automatically at startup.
 
@@ -107,7 +107,7 @@ SOURCE_MODE=sorotrail SOROTRAIL_URL=http://your-sorotrail:8080 docker compose up
 ## Configuration
 
 All configuration comes from environment variables (see `.env.example`).
-SoroScope validates the variables its selected mode requires and fails at
+SoroLens validates the variables its selected mode requires and fails at
 startup with a message naming both, rather than failing later on a request.
 
 | Variable | Default | Mode | Description |
@@ -123,7 +123,7 @@ startup with a message naming both, rather than failing later on a request.
 | `RETENTION_LEDGERS` | `17280` | standalone | Cold-start reach-back in ledgers (~24h at 5s/ledger). |
 | `SOROTRAIL_URL` | — (**required**) | upstream | Base URL of a SoroTrail indexer. |
 
-Watching more than 25 contracts is supported; SoroScope batches them across
+Watching more than 25 contracts is supported; SoroLens batches them across
 requests to respect the RPC's caps of 5 filters per request and 5 contract IDs
 per filter.
 
@@ -160,7 +160,7 @@ curl -s localhost:8080/health
   "mode": "rpc",
   "healthy": true,
   "latest_ledger": 3947332,
-  "retention_note": "Standalone mode captures events only while SoroScope is running: …"
+  "retention_note": "Standalone mode captures events only while SoroLens is running: …"
 }
 ```
 
@@ -275,7 +275,7 @@ scan — the totals themselves still come straight from SoroTrail.
 ## How events are decoded
 
 Contract events carry topics and a value as Soroban `ScVal`s. When the RPC node
-supports `xdrFormat: "json"`, SoroScope asks for that and stores what it gets.
+supports `xdrFormat: "json"`, SoroLens asks for that and stores what it gets.
 Against older nodes it falls back to base64 XDR and decodes locally through
 `github.com/stellar/go-stellar-sdk/xdr` — the fallback latches after one attempt,
 so only the first request pays for it.
@@ -304,7 +304,7 @@ once written, so re-reading a ledger range is a no-op rather than a rewrite.
 ## Development
 
 ```sh
-make build     # compile to bin/soroscope
+make build     # compile to bin/sorolens
 make test      # unit tests; the Postgres tests skip without a database
 make test-db   # everything, against the docker-compose Postgres
 make lint      # golangci-lint
@@ -324,11 +324,11 @@ pages go here._
 Three tools over the same Soroban event data, each useful on its own:
 
 - **[SoroTrail](https://github.com/sorotrail/SoroTrail)** — indexes contract
-  events durably, past the RPC's retention window. SoroScope reads from it in
+  events durably, past the RPC's retention window. SoroLens reads from it in
   upstream mode.
 - **SoroBeacon** — monitors contract events and sends alerts when they match a
   rule.
-- **SoroScope** (this repo) — browses and explores the events, decoded.
+- **SoroLens** (this repo) — browses and explores the events, decoded.
 
 ## License
 

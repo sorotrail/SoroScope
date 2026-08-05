@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/sorotrail/soroscope/internal/source"
+	"github.com/sorotrail/sorolens/internal/source"
 )
 
 // newTestStore connects to the database named by TEST_DATABASE_URL, applies

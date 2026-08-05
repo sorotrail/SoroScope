@@ -13,8 +13,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/sorotrail/soroscope/internal/rpc"
-	"github.com/sorotrail/soroscope/internal/store"
+	"github.com/sorotrail/sorolens/internal/rpc"
+	"github.com/sorotrail/sorolens/internal/store"
 )
 
 func testLogger() *slog.Logger {

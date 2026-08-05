@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/sorotrail/soroscope/internal/rpc"
-	"github.com/sorotrail/soroscope/internal/source"
-	"github.com/sorotrail/soroscope/internal/store"
+	"github.com/sorotrail/sorolens/internal/rpc"
+	"github.com/sorotrail/sorolens/internal/source"
+	"github.com/sorotrail/sorolens/internal/store"
 )
 
 // mockRPC is a scripted rpc.Client. Each call to GetEvents pops the next

@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/sorotrail/soroscope/internal/source"
+	"github.com/sorotrail/sorolens/internal/source"
 )
 
 const testContract = "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC"
@@ -109,7 +109,7 @@ func TestIndexRenders(t *testing.T) {
 
 	body := rec.Body.String()
 	assert.Contains(t, body, "1234", "total event count should be shown")
-	assert.Contains(t, body, "SoroScope")
+	assert.Contains(t, body, "SoroLens")
 	// The decoded event name, not the raw JSON wrapper, is what users need.
 	assert.Contains(t, body, "transfer")
 	// The retention caveat must be visible so an empty explorer is explicable.

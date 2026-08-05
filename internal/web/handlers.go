@@ -8,8 +8,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/sorotrail/soroscope/internal/config"
-	"github.com/sorotrail/soroscope/internal/source"
+	"github.com/sorotrail/sorolens/internal/config"
+	"github.com/sorotrail/sorolens/internal/source"
 )
 
 // recentEventsOnIndex is how many events the overview page shows.

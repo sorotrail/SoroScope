@@ -1,4 +1,4 @@
-// Command soroscope serves the contract explorer: a web UI and a read-only
+// Command sorolens serves the contract explorer: a web UI and a read-only
 // JSON API over decoded Soroban contract events.
 //
 // It runs in one of two modes, selected by SOURCE_MODE:
@@ -22,16 +22,16 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	"github.com/sorotrail/soroscope/internal/api"
-	"github.com/sorotrail/soroscope/internal/config"
-	"github.com/sorotrail/soroscope/internal/decode"
-	"github.com/sorotrail/soroscope/internal/ingest"
-	"github.com/sorotrail/soroscope/internal/rpc"
-	"github.com/sorotrail/soroscope/internal/source"
-	"github.com/sorotrail/soroscope/internal/source/rpcsource"
-	"github.com/sorotrail/soroscope/internal/source/sorotrailsource"
-	"github.com/sorotrail/soroscope/internal/store"
-	"github.com/sorotrail/soroscope/internal/web"
+	"github.com/sorotrail/sorolens/internal/api"
+	"github.com/sorotrail/sorolens/internal/config"
+	"github.com/sorotrail/sorolens/internal/decode"
+	"github.com/sorotrail/sorolens/internal/ingest"
+	"github.com/sorotrail/sorolens/internal/rpc"
+	"github.com/sorotrail/sorolens/internal/source"
+	"github.com/sorotrail/sorolens/internal/source/rpcsource"
+	"github.com/sorotrail/sorolens/internal/source/sorotrailsource"
+	"github.com/sorotrail/sorolens/internal/store"
+	"github.com/sorotrail/sorolens/internal/web"
 )
 
 // shutdownTimeout bounds how long in-flight requests may finish after a signal.
@@ -41,7 +41,7 @@ func main() {
 	if err := run(); err != nil {
 		// The logger may not exist yet if configuration failed, so report the
 		// startup failure on stderr unconditionally.
-		fmt.Fprintf(os.Stderr, "soroscope: %v\n", err)
+		fmt.Fprintf(os.Stderr, "sorolens: %v\n", err)
 		os.Exit(1)
 	}
 }
@@ -65,7 +65,7 @@ func run() error {
 	}
 	defer cleanup()
 
-	log.Info("starting soroscope",
+	log.Info("starting sorolens",
 		"mode", cfg.SourceMode,
 		"http_addr", cfg.HTTPAddr)
 
@@ -115,7 +115,7 @@ func run() error {
 	}
 
 	wg.Wait()
-	log.Info("soroscope stopped")
+	log.Info("sorolens stopped")
 	return nil
 }
 

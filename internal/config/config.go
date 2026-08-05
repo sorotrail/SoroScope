@@ -1,4 +1,4 @@
-// Package config loads SoroScope configuration from environment variables.
+// Package config loads SoroLens configuration from environment variables.
 package config
 
 import (
@@ -11,14 +11,14 @@ import (
 	"time"
 )
 
-// SourceMode selects where SoroScope reads contract events from.
+// SourceMode selects where SoroLens reads contract events from.
 type SourceMode string
 
 const (
-	// ModeRPC is standalone mode: SoroScope polls a Stellar RPC endpoint
+	// ModeRPC is standalone mode: SoroLens polls a Stellar RPC endpoint
 	// itself and stores events in its own Postgres database.
 	ModeRPC SourceMode = "rpc"
-	// ModeSoroTrail is upstream mode: SoroScope reads from a SoroTrail
+	// ModeSoroTrail is upstream mode: SoroLens reads from a SoroTrail
 	// indexer's HTTP API and keeps no database of its own.
 	ModeSoroTrail SourceMode = "sorotrail"
 )

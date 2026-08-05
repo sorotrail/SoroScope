@@ -1,10 +1,10 @@
 .PHONY: build run test test-db lint fmt up down clean
 
 build:
-	go build -o bin/soroscope ./cmd/soroscope
+	go build -o bin/sorolens ./cmd/sorolens
 
 run: build
-	./bin/soroscope
+	./bin/sorolens
 
 test:
 	go test ./...
@@ -12,7 +12,7 @@ test:
 # Run every test including the Postgres integration tests, against the
 # docker-compose database (make up first, or point at your own Postgres).
 test-db:
-	TEST_DATABASE_URL=$${TEST_DATABASE_URL:-postgres://soroscope:soroscope@localhost:5432/soroscope?sslmode=disable} go test ./...
+	TEST_DATABASE_URL=$${TEST_DATABASE_URL:-postgres://sorolens:sorolens@localhost:5432/sorolens?sslmode=disable} go test ./...
 
 lint:
 	golangci-lint run

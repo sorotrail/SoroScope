@@ -9,8 +9,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/sorotrail/soroscope/internal/config"
-	"github.com/sorotrail/soroscope/internal/source"
+	"github.com/sorotrail/sorolens/internal/config"
+	"github.com/sorotrail/sorolens/internal/source"
 )
 
 type errorResponse struct {

@@ -9,10 +9,10 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/sorotrail/soroscope/internal/decode"
-	"github.com/sorotrail/soroscope/internal/rpc"
-	"github.com/sorotrail/soroscope/internal/source"
-	"github.com/sorotrail/soroscope/internal/store"
+	"github.com/sorotrail/sorolens/internal/decode"
+	"github.com/sorotrail/sorolens/internal/rpc"
+	"github.com/sorotrail/sorolens/internal/source"
+	"github.com/sorotrail/sorolens/internal/store"
 )
 
 // MaxPagesPerBatch bounds how many cursor pages one batch may follow in a
